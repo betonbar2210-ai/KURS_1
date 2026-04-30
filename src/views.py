@@ -1,5 +1,5 @@
 from datetime import datetime
-from src.utils import sort_pay, new_filter_pay_dict
+from src.utils import new_filter_pay_list, new_sort_pay_list
 import json
 from src.services import currency_rates
 
@@ -17,8 +17,8 @@ def greeting():
         return "Доброй ночи"
 
 def json_conclusion(date_time):
-    filter_data = new_filter_pay_dict()
-    #sort_data = sort_pay()
+    filter_data = new_filter_pay_list()
+    sort_data = new_sort_pay_list()
     greet = greeting()
     currency_usd = currency_rates('USD')
     currency_eur = currency_rates('EUR')
@@ -26,7 +26,7 @@ def json_conclusion(date_time):
     result = {
         "greeting": greet,
         "cards": filter_data,
-        #"top_transactions": sort_data.to_dict(),
+        "top_transactions": sort_data,
         #"stock_prices": stock
         "currency_rates": [
             {
