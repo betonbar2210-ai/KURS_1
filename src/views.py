@@ -15,22 +15,20 @@ def greeting():
         return "Доброй ночи"
 
 
-def filter_pay():
+def filter_pay(excel_file):
     """Убираем пополнения оставляя расходы"""
-    data_frame = reader_excel()
-    df_filter = data_frame.loc[data_frame["Сумма операции"] < 0]
+    df_filter = excel_file.loc[excel_file["Сумма операции"] < 0]
     return df_filter
 
 
-def group_number_card():
+def group_number_card(excel_file):
     """Группируем по номеру карты, Суммируем, Меняем минус на плюс"""
-    df_filter = filter_pay()
-    df_group = df_filter.groupby(by=["Номер карты"])
+    df_group = excel_file.groupby(by=["Номер карты"])
     result = df_group["Сумма операции"].sum().abs()
     return result
 
 
-def new_filter_pay_list():
+def new_filter_pay_list(excel_file):
     """Принимаем df из group_number_card преобразуем в список словарей
     добавляем кэшбэк из расчета 1 руб на 100 руб затрат
     пример
@@ -40,23 +38,30 @@ def new_filter_pay_list():
       "cashback": 12.62
     }
     """
-    my_dict = group_number_card()
     cards = []
-    for key, value in my_dict.items():
-        new_dict = {"last_digits": key[-4:], "total_spent": value, "cashback": round(value / 100, 2)}
+    for key, value in excel_file.items():
+        try:
+            numeric_value = float(value)
+        except (ValueError, TypeError):
+            numeric_value = 0.0
+
+        new_dict = {
+            "last_digits": str(key)[-4:],
+            "total_spent": numeric_value,
+            "cashback": round(numeric_value / 100, 2)
+        }
         cards.append(new_dict)
     return cards
 
 
-def sort_pay():
+def sort_pay(excel_file):
     """Сортируем по суммам затрат и выводим 5 самых крупных"""
-    data_frame = filter_pay()
-    sort_df = data_frame.sort_values(by=["Сумма операции с округлением"], ascending=False)
+    sort_df = excel_file.sort_values(by=["Сумма операции с округлением"], ascending=False)
     result = sort_df[["Дата платежа", "Сумма операции с округлением", "Категория", "Описание"]]
     return result.head()
 
 
-def new_sort_pay_list():
+def new_sort_pay_list(excel_file):
     """Принимаем df из sort_pay преобразуем в список словарей для правильного вывода
     пример
     [{
@@ -66,14 +71,13 @@ def new_sort_pay_list():
       "description": "Перевод Кредитная карта. ТП 10.2 RUR"
     }]
     """
-    df = sort_pay()
     sort_list = []
-    for name, data in df.iterrows():
+    for name, row in excel_file.iterrows():
         sort_dict = {
-            "date": data["Дата платежа"],
-            "amount": data["Сумма операции с округлением"],
-            "category": data["Категория"],
-            "description": data["Описание"],
+            "date": row["Дата платежа"],
+            "amount": row["Сумма операции с округлением"],
+            "category": row["Категория"],
+            "description": row["Описание"],
         }
         sort_list.append(sort_dict)
     return sort_list
