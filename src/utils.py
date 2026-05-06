@@ -3,8 +3,6 @@ import json
 import requests
 import yfinance as yf
 
-from config import ROOT_DIR
-
 
 def reader_json(way):
     """Читаем файл JSON и возвращает словарь с настройками."""
