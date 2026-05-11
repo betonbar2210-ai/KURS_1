@@ -1,7 +1,9 @@
-
-from src.views import new_filter_pay_list, greeting, filter_pay, group_number_card, sort_pay, new_sort_pay_list
 from src.utils import currency_rates, stock_prices, reader_excel, reader_json
-from config import WAY_JSON, WAY_EXCEL
+from src.views import new_filter_pay_list, greeting, filter_pay, group_number_card, sort_pay, new_sort_pay_list
+from config import WAY_JSON, WAY_EXCEL, WAY_LOG
+import json
+
+
 
 
 def home_page():
@@ -24,5 +26,9 @@ def home_page():
     }
     return result
 
+result_home_page = home_page()
+
 if __name__ == '__main__':
-    print(home_page())
+    print(result_home_page)
+    json_home_page = json.dumps(result_home_page, ensure_ascii=False)
+

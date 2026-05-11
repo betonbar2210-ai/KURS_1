@@ -3,19 +3,32 @@ import json
 import requests
 import yfinance as yf
 
+from config import modul_log
 
+
+logger_utils  = modul_log("utils")
 def reader_json(way):
     """Читаем файл JSON и возвращает словарь с настройками."""
-    with open(way, 'r', encoding='utf-8') as x:
-        setting = json.load(x)
-    return setting
+    try:
+        with open(way, 'r', encoding='utf-8') as x:
+            setting = json.load(x)
+        logger_utils.info(f"Получили и открыли json файл")
+        return setting
+    except Exception as e:
+        logger_utils.error(f'Ошибка {e}')
+        return f"Ошибка {e}"
+
 
 
 def reader_excel(way):
     """Функция чтения EXCEL файла с помощью pandas"""
-    data_excel = pd.read_excel(way)
-    return data_excel
-
+    try:
+        data_excel = pd.read_excel(way)
+        logger_utils.info("Прочитали EXCEL")
+        return data_excel
+    except Exception as e:
+        logger_utils.error(f'Ошибка {e}')
+        return f"Ошибка {e}"
 
 def currency_rates(setting):
     """Получает курс валюты к рублю через API ЦБ РФ."""
@@ -35,11 +48,14 @@ def currency_rates(setting):
                     "rate" : valute_data['Value'],
                 }
                 result.append(new_dict)
+                logger_utils.info("Получили курс валют")
             else:
+                logger_utils.error(f"Валюта {currency_code} не найдена")
                 return {"error": f"Валюта {currency_code} не найдена"}
 
         except Exception as e:
-            return {"error": f"{e}"}
+            logger_utils.error(f"ERROR:{e}")
+            return {}
     return result
 
 
@@ -58,7 +74,8 @@ def stock_prices(setting):
                 "stock": ticker,
                 "price":info.get("previousClose")}
             stock_list.append(stock_data)
+            logger_utils.info(f"Получена цена акции {ticker} ")
         except Exception as e:
-            print(f"Не удалось получить данные для {ticker}: {e}")
+            logger_utils.error(f"Не удалось получить данные для {ticker}: {e}")
             continue
     return stock_list
