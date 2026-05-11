@@ -13,10 +13,15 @@ def test_reader_json(utils_json, test_api_ok):
     with patch("src.utils.json.load", side_effect=fake):
         assert reader_json(utils_json)  == f"Ошибка expected str, bytes or os.PathLike object, not dict"
 
-def test_reader_excel(test_read_ex, utils_json):
+def test_reader_excel_ok(test_read_ex):
         with patch("src.utils.pd.read_excel", return_value = test_read_ex):
             assert reader_excel(test_read_ex).to_dict() == test_read_ex.to_dict()
-            assert reader_json(utils_json) == "Ошибка expected str, bytes or os.PathLike object, not dict"
+
+
+
+def test_reader_excel_no(test_read_ex):
+    with patch("src.utils.pd.read_excel", side_effect = ValueError):
+        assert reader_json(test_read_ex) == "Ошибка expected str, bytes or os.PathLike object, not DataFrame"
 
 
 

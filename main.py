@@ -24,7 +24,7 @@ def home_page():
         "currency_rates": currency,
         "stock_prices": stock
     }
-    return result
+    return filter_pay_df
 
 result_home_page = home_page()
 

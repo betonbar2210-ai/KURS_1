@@ -68,7 +68,8 @@ def new_filter_pay_list(excel_file):
 
 
 def sort_pay(excel_file):
-    """Сортируем по суммам затрат и выводим 5 самых крупных"""
+    """Принимает DataFrame из filter_pay
+    Сортируем по суммам затрат и выводим 5 самых крупных"""
     logger.info(f"Сортируем по суммам затрат")
     sort_df = excel_file.sort_values(by=["Сумма операции с округлением"], ascending=False)
     logger.info(f"Выводим 5 самых крупных отсортированных затрат с нужными ключами")
