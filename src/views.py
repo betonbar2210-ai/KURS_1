@@ -6,8 +6,7 @@ from config import modul_log
 logger = modul_log("views")
 
 
-def greeting():
-    date = datetime.now()
+def greeting(date):
     logger.info(f"Получаем текущее время")
     time_now = int(date.strftime('%H'))
     logger.info(f"Получили из даты часы и перевели в число(int)")
