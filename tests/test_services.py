@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.services import filter_date_services, filter_nan_services
+from src.services import filter_date_services, filter_nan_services, sort_cashhbac
 from pandas import Timestamp
 
 def test_filter_date_services(testing_pd):
@@ -22,4 +22,5 @@ def test_filter_nan_services(testing_pd):
         'Кэшбэк': {1: 20.0}}
 
 
-
+def test_sort_cashhbac(testing_pd):
+    assert sort_cashhbac(testing_pd).to_dict() == {'Аптека': 0.0, 'Кафе': 20.0, 'Супермаркеты': 0.0}

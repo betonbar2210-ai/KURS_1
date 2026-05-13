@@ -8,7 +8,7 @@ logger = modul_log("views")
 
 def greeting(date):
     logger.info(f"Получаем текущее время")
-    time_now = int(date.strftime('%H'))
+    time_now = date.hour
     logger.info(f"Получили из даты часы и перевели в число(int)")
     if 6 <= time_now < 12:
         return "Доброе утро"

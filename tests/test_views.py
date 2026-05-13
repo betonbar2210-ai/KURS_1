@@ -4,16 +4,11 @@ from unittest.mock import Mock, patch
 from src.views import greeting, filter_pay, group_number_card, new_filter_pay_list, sort_pay, new_sort_pay_list
 
 
-@patch("src.views.datetime")
-def test_greeting(mock_time):
-    mock_time.now.return_value = datetime(1, 1,1,10, 50)
-    assert greeting() == 'Доброе утро'
-    mock_time.now.return_value = datetime(1, 1, 1, 13, 50)
-    assert greeting() == "Добрый день"
-    mock_time.now.return_value = datetime(1, 1, 1, 22, 50)
-    assert greeting() == "Добрый вечер"
-    mock_time.now.return_value = datetime(1, 1, 1, 23, 50)
-    assert greeting() == "Доброй ночи"
+def test_greeting():
+    assert greeting(datetime(1, 1,1,10, 50)) == 'Доброе утро'
+    assert greeting(datetime(1, 1, 1, 13, 50)) == "Добрый день"
+    assert greeting(datetime(1, 1, 1, 22, 50)) == "Добрый вечер"
+    assert greeting(datetime(1, 1, 1, 23, 50)) == "Доброй ночи"
 
 
 def test_filter_pay(test_read_ex):

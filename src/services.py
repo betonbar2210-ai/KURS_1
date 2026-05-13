@@ -30,7 +30,9 @@ def sort_cashhbac(dataframe):
     """Принимает DataFrame из filter_nan_services
     Группируем по по категориям
     Выводим топ 3 """
-    logger_services.info("Сортируем по кэшбэку и выводим 3 самых крупных")
+    logger_services.info("Группируем по категориям")
     group_sort_df = dataframe.groupby(by=["Категория"])
+    logger_services.info("Суммируем кэшбэк")
     z = group_sort_df["Кэшбэк"].sum()
+    logger_services.info("Выводим топ 3")
     return z.head(3)

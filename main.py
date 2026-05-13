@@ -1,5 +1,7 @@
 import json
 from datetime import datetime
+
+from src.reports import spending_by_category
 from src.services import filter_date_services, filter_nan_services, sort_cashhbac
 from src.utils import currency_rates, stock_prices, reader_excel, reader_json
 from src.views import new_filter_pay_list, greeting, filter_pay, group_number_card, sort_pay, new_sort_pay_list
@@ -38,3 +40,13 @@ def services_page(df, year, month):
     result_dict = group_df.to_dict()
     result_json = json.dumps(result_dict, ensure_ascii=False)
     return result_json
+
+
+def reports_page(df, category, date):
+    result = spending_by_category(df, category, date)
+    result_json = json.dumps(result, ensure_ascii=False)
+    return result_json
+
+excel_file = reader_excel(WAY_EXCEL)
+if __name__ == '__main__':
+    print(spending_by_category(excel_file, 'Супермаркеты', "20.01.2020"))
