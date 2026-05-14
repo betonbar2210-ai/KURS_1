@@ -3,13 +3,12 @@ from datetime  import datetime
 import pandas as pd
 from pandas import DateOffset
 
-from config import modul_log, WAY_EXCEL
+from config import modul_log
 from src.decorators import save_reports
-from src.utils import reader_excel
 
 logger_reports = modul_log("reports")
 
-# @save_reports('pr')
+@save_reports()
 def spending_by_category(df, category, date = None):
     """Функция для вывода расходов по категориям
     Дату указывыать в формате ДД.ММ.ГГГГ"""
