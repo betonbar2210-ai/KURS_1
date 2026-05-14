@@ -1,5 +1,6 @@
 import functools
 import json
+import os
 
 from config import set_reports
 def save_reports(file_name = None):
@@ -11,14 +12,10 @@ def save_reports(file_name = None):
             if file_name is None:
                 actual_file_name = func.__name__
             else:
-                actual_file_name = file_name
+                actual_file_name = os.path.splitext(file_name)[0]
             full_path = set_reports(actual_file_name)
-            if isinstance(result, dict):
-                text_to_write = json.dumps(result, ensure_ascii=False, indent=4)
-            else:
-                text_to_write = str(result)
             with open(set_reports(full_path), "a", encoding="utf-8") as file:
-                file.write(text_to_write + "\n\n")
+                file.write(result)
             return result
         return inner
     return wrapper

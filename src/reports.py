@@ -9,7 +9,7 @@ from src.utils import reader_excel
 
 logger_reports = modul_log("reports")
 
-@save_reports()
+# @save_reports('pr')
 def spending_by_category(df, category, date = None):
     """Функция для вывода расходов по категориям
     Дату указывыать в формате ДД.ММ.ГГГГ"""
