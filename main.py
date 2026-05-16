@@ -1,14 +1,10 @@
 import json
-from datetime import datetime
 
+from config import WAY_EXCEL, WAY_JSON
 from src.reports import spending_by_category
 from src.services import filter_date_services, filter_nan_services, sort_cashhbac
-from src.utils import currency_rates, stock_prices, reader_excel, reader_json
-from src.views import new_filter_pay_list, greeting, filter_pay, group_number_card, sort_pay, new_sort_pay_list
-from config import WAY_JSON, WAY_EXCEL
-
-
-
+from src.utils import currency_rates, reader_excel, reader_json, stock_prices
+from src.views import filter_pay, greeting, group_number_card, new_filter_pay_list, new_sort_pay_list, sort_pay
 
 
 def home_page(date_now):
@@ -46,7 +42,3 @@ def reports_page(df, category, date):
     result = spending_by_category(df, category, date)
     result_json = json.dumps(result, ensure_ascii=False)
     return result_json
-
-excel_file = reader_excel(WAY_EXCEL)
-if __name__ == '__main__':
-    print(spending_by_category(excel_file, 'Супермаркеты', "20.01.2020"))

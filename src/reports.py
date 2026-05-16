@@ -1,4 +1,4 @@
-from datetime  import datetime
+from datetime import datetime
 
 import pandas as pd
 from pandas import DateOffset
@@ -8,17 +8,18 @@ from src.decorators import save_reports
 
 logger_reports = modul_log("reports")
 
+
 @save_reports()
-def spending_by_category(df, category, date = None):
+def spending_by_category(df, category, date=None):
     """Функция для вывода расходов по категориям
     Дату указывыать в формате ДД.ММ.ГГГГ"""
-    logger_reports.info(f"Переводим дату в формат datetime")
-    df['Дата платежа'] = pd.to_datetime(df['Дата платежа'], dayfirst=True)
-    logger_reports.info(f"Если дата не указана, то берем текущую дату")
+    logger_reports.info("Переводим дату в формат datetime")
+    df["Дата платежа"] = pd.to_datetime(df["Дата платежа"], dayfirst=True)
+    logger_reports.info("Если дата не указана, то берем текущую дату")
     if date is None:
         actual_date = datetime.now()
     elif isinstance(date, str):
-        logger_reports.info(f"Если дата указана, то преобразуем в формат datetime")
+        logger_reports.info("Если дата указана, то преобразуем в формат datetime")
         try:
             actual_date = datetime.strptime(date, "%d.%m.%Y")
         except ValueError:
@@ -32,9 +33,8 @@ def spending_by_category(df, category, date = None):
     start_date = actual_date - DateOffset(months=3)
     logger_reports.info(f"Фильтруем по категории {category} и дате {date}")
     filter_data = df[
-                      (df['Категория'] == category) &
-                      (df['Дата платежа'] <= actual_date) &
-                      (df['Дата платежа'] >= start_date)]
-    filter_data['Дата платежа'] = filter_data['Дата платежа'].dt.strftime('%d.%m.%Y')
-    logger_reports.info(f"Выводим дату платежа у сумму операции")
-    return filter_data[['Дата платежа', 'Сумма операции с округлением']].to_dict(orient='records')
+        (df["Категория"] == category) & (df["Дата платежа"] <= actual_date) & (df["Дата платежа"] >= start_date)
+    ]
+    filter_data["Дата платежа"] = filter_data["Дата платежа"].dt.strftime("%d.%m.%Y")
+    logger_reports.info("Выводим дату платежа у сумму операции")
+    return filter_data[["Дата платежа", "Сумма операции с округлением"]].to_dict(orient="records")
