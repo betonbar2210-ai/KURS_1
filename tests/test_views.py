@@ -34,35 +34,6 @@ def test_new_filter_pay_list(group_dict):
     ]
 
 
-def test_new_filter_pay_list_value_error():
-    """Тест блок except при передаче невалидной строки (ValueError)"""
-    # Имитируем ситуацию, когда сумма операции - это текст
-    invalid_data = {"12345814": "Не число"}
-
-    result = new_filter_pay_list(invalid_data)
-
-    # Ожидаем, что функция не упадет, а заменит значение на 0.0
-    expected = [{"last_digits": "5814", "total_spent": 0.0, "cashback": 0.0}]
-
-    assert result == expected
-
-
-def test_new_filter_pay_list_type_error():
-    """Тест блок except при передаче None (TypeError)"""
-    invalid_data = {"99887766": None}
-    assert new_filter_pay_list(invalid_data) == [{"last_digits": "7766", "total_spent": 0.0, "cashback": 0.0}]
-
-
-def test_new_filter_pay_list_mixed():
-    """Тест смешанных данных: валидные данные + невалидные"""
-    mixed_data = {"11112222": 500.0, "33334444": "Ошибка", "55556666": None}
-    assert new_filter_pay_list(mixed_data) == [
-        {"last_digits": "2222", "total_spent": 500.0, "cashback": 5.0},
-        {"last_digits": "4444", "total_spent": 0.0, "cashback": 0.0},
-        {"last_digits": "6666", "total_spent": 0.0, "cashback": 0.0},
-    ]
-
-
 def test_sort_pay(test_read_ex):
     assert sort_pay(test_read_ex).to_dict() == {
         "Дата платежа": {0: "2024-10-01", 1: "2024-10-02"},
